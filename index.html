@@ -39,7 +39,8 @@
         #ff4500 300deg 330deg,
         #a52a2a 330deg 360deg
       );
-      transition: transform 3s linear; /* Using linear transition for consistency */
+      transform-origin: center;
+      /* No easing */
     }
     .pointer {
       position: absolute;
@@ -103,14 +104,29 @@
       // Total spin angle (rotation will always start from 0 for every new click)
       const spinAngle = baseSpin + targetAngle;
 
-      // Apply rotation in a smooth, constant direction (always clockwise)
+      // Set a keyframe animation for smooth, continuous spin
+      wheel.style.animation = 'spinAnimation 3s linear forwards';
       wheel.style.transform = `rotate(${spinAngle}deg)`;
 
-      // After animation ends, reset for consistent behavior
+      // Reset the animation after the spinning ends
       setTimeout(() => {
         isSpinning = false;
+        wheel.style.animation = 'none'; // Stop animation and reset
+        wheel.offsetHeight; // Trigger reflow (recalculate styles)
       }, 3000); // Matches the CSS animation duration
     });
   </script>
+  
+  <style>
+    @keyframes spinAnimation {
+      from {
+        transform: rotate(0deg);
+      }
+      to {
+        transform: rotate(1080deg); /* Keep spinning in one direction */
+      }
+    }
+  </style>
 </body>
 </html>
+
