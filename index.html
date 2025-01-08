@@ -12,7 +12,7 @@
       align-items: center;
       height: 100vh;
       margin: 0;
-      background-color: #f9f9f9;
+      background-color: #f0f0f0;
     }
     .wheel-container {
       position: relative;
@@ -39,7 +39,7 @@
         #ff4500 300deg 330deg,
         #a52a2a 330deg 360deg
       );
-      transition: transform 2s cubic-bezier(0.42, 0, 0.58, 1);
+      transition: transform 3s cubic-bezier(0.22, 0.68, 0.18, 1.1);
     }
     .pointer {
       position: absolute;
@@ -87,20 +87,26 @@
       if (isSpinning) return;
       isSpinning = true;
 
-      // Generate at least 3 full rotations (1080 degrees) + random extra between 0-360°
-      const extraDegrees = Math.floor(Math.random() * 360);
-      const totalDegrees = 1080 + extraDegrees;
+      const numSections = 12; // Number of sections on the wheel
+      const degreesPerSection = 360 / numSections; // 30° per section
+      const randomSection = Math.floor(Math.random() * numSections); // Random section index (0 to 11)
+      
+      // Calculate the random stopping angle for that section
+      const randomAngle = randomSection * degreesPerSection;
 
-      // Set the spin
+      // Ensure at least 3 full spins (1080°) plus the random stopping point
+      const totalDegrees = 1080 + randomAngle;
+
+      // Spin the wheel
       wheel.style.transform = `rotate(${totalDegrees}deg)`;
 
       // Wait for the spin to complete
       setTimeout(() => {
         isSpinning = false;
-        const finalAngle = totalDegrees % 360; // Get the final stopping angle within 0-360°
-        console.log(`Wheel stopped at angle: ${finalAngle}`);
-        // You can use `finalAngle` to determine the selected segment
-      }, 2000); // Matches the 2s transition duration
+
+        // Log stopping information
+        console.log(`Wheel stopped on section: ${randomSection + 1}`);
+      }, 3000); // Matches the 3s transition duration
     });
   </script>
 </body>
