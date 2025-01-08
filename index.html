@@ -39,8 +39,6 @@
         #ff4500 300deg 330deg,
         #a52a2a 330deg 360deg
       );
-      transform-origin: center;
-      /* No easing */
     }
     .pointer {
       position: absolute;
@@ -51,6 +49,7 @@
       height: 40px;
       background-color: black;
       clip-path: polygon(50% 100%, 0 0, 100% 0);
+      z-index: 10;
     }
     .button {
       position: absolute;
@@ -84,49 +83,55 @@
     const button = document.querySelector('.button');
     let isSpinning = false;
 
+    // Adjust spin parameters
+    const numSections = 12;
+    const degreesPerSection = 360 / numSections;
+    
+    // Function to start spin
     button.addEventListener('click', () => {
       if (isSpinning) return;
       isSpinning = true;
 
-      const numSections = 12; // Number of sections
-      const degreesPerSection = 360 / numSections; // Each section spans 30 degrees
-
-      // Randomly select a section (0 to 11)
+      // Get a random target section (0 to numSections-1)
       const randomSection = Math.floor(Math.random() * numSections);
-
-      // Offset the angle by half a section to ensure the pointer lands in the middle
+      
+      // Offset angle by half of the section's width to ensure pointer lands at the center
       const centerOffset = degreesPerSection / 2;
       const targetAngle = randomSection * degreesPerSection + centerOffset;
+      
+      // Minimum rotations (1080 degrees = 3 full spins)
+      const baseSpin = 1080;  // 3 full spins
 
-      // Base spin of 3 full rotations (1080 degrees)
-      const baseSpin = 1080;
-
-      // Total spin angle (rotation will always start from 0 for every new click)
+      // Total angle to rotate (initial spins + random landing)
       const spinAngle = baseSpin + targetAngle;
+      
+      // Use JavaScript to animate the spin
+      let startAngle = 0;  // Start angle is 0
+      const totalSpinTime = 3000;  // Spin duration in ms
 
-      // Set a keyframe animation for smooth, continuous spin
-      wheel.style.animation = 'spinAnimation 3s linear forwards';
-      wheel.style.transform = `rotate(${spinAngle}deg)`;
+      let startTime = null;
 
-      // Reset the animation after the spinning ends
-      setTimeout(() => {
-        isSpinning = false;
-        wheel.style.animation = 'none'; // Stop animation and reset
-        wheel.offsetHeight; // Trigger reflow (recalculate styles)
-      }, 3000); // Matches the CSS animation duration
+      // Smooth rotate over time
+      const animate = (currentTime) => {
+        if (!startTime) startTime = currentTime;
+        const timeElapsed = currentTime - startTime;
+        const progress = timeElapsed / totalSpinTime;
+        const rotation = startAngle + progress * (spinAngle - startAngle);
+
+        // Set new rotation for the wheel
+        wheel.style.transform = `rotate(${rotation}deg)`;
+
+        // Continue the animation until it completes
+        if (timeElapsed < totalSpinTime) {
+          requestAnimationFrame(animate);
+        } else {
+          isSpinning = false;
+        }
+      };
+
+      // Start the animation
+      requestAnimationFrame(animate);
     });
   </script>
-  
-  <style>
-    @keyframes spinAnimation {
-      from {
-        transform: rotate(0deg);
-      }
-      to {
-        transform: rotate(1080deg); /* Keep spinning in one direction */
-      }
-    }
-  </style>
 </body>
 </html>
-
