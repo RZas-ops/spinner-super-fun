@@ -43,13 +43,13 @@
     }
     .pointer {
       position: absolute;
-      top: 0; /* Pointer at the top */
-      left: 50%; /* Centered horizontally */
-      transform: translateX(-50%) rotate(0deg); /* No extra rotation */
+      top: 0;
+      left: 50%;
+      transform: translateX(-50%) rotate(0deg);
       width: 20px;
       height: 40px;
       background-color: black;
-      clip-path: polygon(50% 100%, 0 0, 100% 0); /* Creates the triangular pointer shape */
+      clip-path: polygon(50% 100%, 0 0, 100% 0);
     }
     .button {
       position: absolute;
@@ -82,7 +82,6 @@
     const wheel = document.querySelector('.wheel');
     const button = document.querySelector('.button');
     let isSpinning = false;
-    let totalSpins = 0;
 
     button.addEventListener('click', () => {
       if (isSpinning) return;
@@ -101,16 +100,19 @@
       // Base spin of 3 full rotations (1080 degrees)
       const baseSpin = 1080;
 
-      // Total spin angle
-      totalSpins += baseSpin + targetAngle;
+      // Resetting the spin on each cycle ensures precise targeting
+      const spinAngle = baseSpin + targetAngle;
 
       // Apply rotation
-      wheel.style.transform = `rotate(${totalSpins}deg)`;
+      wheel.style.transform = `rotate(${spinAngle}deg)`;
 
+      // After animation ends, reset for consistent behavior
       setTimeout(() => {
         isSpinning = false;
-        console.log(`Wheel stopped at section ${randomSection + 1}`);
-      }, 3000); // Duration matches CSS animation
+
+        // Keep cumulative rotation within a single turn for accuracy
+        wheel.style.transform = `rotate(${targetAngle}deg)`;
+      }, 3000); // Matches the CSS animation duration
     });
   </script>
 </body>
