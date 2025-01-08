@@ -20,6 +20,7 @@
       width: 300px;
       height: 300px;
       border-radius: 50%;
+      border: 5px solid #ccc;
       overflow: hidden;
     }
 
@@ -29,17 +30,19 @@
       height: 100%;
       border-radius: 50%;
       transform-origin: center;
+      transition: transform 2s cubic-bezier(0.17, 0.67, 0.83, 0.67);
     }
 
     .segment {
       position: absolute;
-      width: 150px; /* half the container width */
-      height: 300px; /* full container height */
+      width: 150px; /* half of container width */
+      height: 300px;
+      background-color: transparent;
       clip-path: polygon(0 0, 100% 50%, 0 100%);
       transform-origin: 100% 50%;
     }
 
-    /* Segment colors */
+    /* Coloring segments */
     .segment:nth-child(1) { background-color: #FF5733; transform: rotate(0deg); }
     .segment:nth-child(2) { background-color: #FFC300; transform: rotate(30deg); }
     .segment:nth-child(3) { background-color: #DAF7A6; transform: rotate(60deg); }
@@ -53,36 +56,36 @@
     .segment:nth-child(11) { background-color: #2C3E50; transform: rotate(300deg); }
     .segment:nth-child(12) { background-color: #7DCEA0; transform: rotate(330deg); }
 
-    /* Spin button */
+    /* Center button */
     #spin-btn {
       position: absolute;
       width: 80px;
       height: 80px;
+      background-color: #FFF;
+      border-radius: 50%;
+      border: 3px solid #2980b9;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      background-color: white;
-      border-radius: 50%;
-      border: 3px solid #3498db;
       display: flex;
       justify-content: center;
       align-items: center;
       font-size: 16px;
       font-weight: bold;
-      color: #3498db;
+      color: #2980b9;
       cursor: pointer;
       z-index: 10;
     }
 
     #spin-btn:hover {
       background-color: #3498db;
-      color: white;
+      color: #FFF;
     }
   </style>
 </head>
 <body>
   <div id="wheel-container">
-    <!-- Wheel -->
+    <!-- Spinning Wheel -->
     <div id="wheel">
       <div class="segment"></div>
       <div class="segment"></div>
@@ -97,36 +100,33 @@
       <div class="segment"></div>
       <div class="segment"></div>
     </div>
-    <!-- Spin button -->
+    <!-- Spin Button -->
     <div id="spin-btn">SPIN</div>
   </div>
 
   <script>
-    const wheel = document.getElementById("wheel");
-    const spinButton = document.getElementById("spin-btn");
-    let currentAngle = 0; // Keep track of current rotation angle
+    const wheel = document.getElementById('wheel');
+    const spinButton = document.getElementById('spin-btn');
     let isSpinning = false;
 
-    spinButton.addEventListener("click", () => {
+    spinButton.addEventListener('click', () => {
       if (isSpinning) return; // Prevent multiple spins
       isSpinning = true;
 
-      // Generate a random spin degree (at least 3 full rotations)
-      const randomAngle = Math.floor(Math.random() * 360 + 3 * 360);
+      // Generate a random stop point
+      const randomDegree = Math.floor(Math.random() * 360) + (360 * 3); // Spin at least 3 full rotations
+      const finalDegree = randomDegree % 360; // Map to 0-360 range
+      
+      // Rotate the wheel
+      wheel.style.transform = `rotate(${randomDegree}deg)`;
 
-      // Increment the current angle
-      currentAngle += randomAngle;
-
-      // Apply rotation
-      wheel.style.transition = "transform 2s ease-out";
-      wheel.style.transform = `rotate(${currentAngle}deg)`;
-
-      // Stop spinning after 2 seconds and calculate the selected segment
+      // Stop spinning after 2 seconds
       setTimeout(() => {
         isSpinning = false;
-        const finalAngle = currentAngle % 360; // Map angle to [0, 360)
-        const segment = Math.floor((360 - finalAngle) / 30) % 12 + 1;
-        alert(`You landed on segment ${segment}`);
+
+        // Identify the selected segment
+        const selectedSegment = Math.floor((360 - finalDegree) / 30) % 12 + 1;
+        alert(`You landed on segment ${selectedSegment}`);
       }, 2000);
     });
   </script>
