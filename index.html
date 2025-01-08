@@ -43,13 +43,13 @@
     }
     .pointer {
       position: absolute;
-      top: -10px;
-      left: 50%;
-      transform: translateX(-50%) rotate(180deg);
-      width: 24px;
-      height: 48px;
+      top: 0; /* Pointer at the top */
+      left: 50%; /* Centered horizontally */
+      transform: translateX(-50%) rotate(0deg); /* No extra rotation */
+      width: 20px;
+      height: 40px;
       background-color: black;
-      clip-path: polygon(50% 0, 0% 100%, 100% 100%);
+      clip-path: polygon(50% 100%, 0 0, 100% 0); /* Creates the triangular pointer shape */
     }
     .button {
       position: absolute;
