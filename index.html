@@ -43,13 +43,13 @@
     }
     .pointer {
       position: absolute;
-      top: -10px;
+      top: -15px;
       left: 50%;
-      transform: translateX(-50%);
+      transform: translateX(-50%) rotate(180deg);
       width: 20px;
       height: 40px;
       background-color: black;
-      clip-path: polygon(50% 0, 0 100%, 100% 100%);
+      clip-path: polygon(50% 100%, 0 0, 100% 0);
     }
     .button {
       position: absolute;
@@ -90,10 +90,13 @@
 
       const numSections = 12; // Number of sections on the wheel
       const degreesPerSection = 360 / numSections; // 30° per section
-      const randomSection = Math.floor(Math.random() * numSections); // Random section index (0 to 11)
 
-      // Calculate the random stopping angle for the target section
-      const randomAngle = randomSection * degreesPerSection;
+      // Randomize the section index (0-11) and offset to center the pointer
+      const randomSection = Math.floor(Math.random() * numSections); // Random section
+      const centerOffset = degreesPerSection / 2; // Offset to stop at the center of a section
+
+      // Calculate the stopping point with offset for centered stopping
+      const randomAngle = randomSection * degreesPerSection + centerOffset;
 
       // Add a base spin of 3 full rotations (1080°)
       const spinDegrees = 1080 + randomAngle;
@@ -109,7 +112,8 @@
         isSpinning = false;
 
         // Log result
-        console.log(`Wheel stopped on section: ${randomSection + 1}`);
+        const finalSection = randomSection + 1; // Sections numbered 1 to 12
+        console.log(`Wheel stopped on section: ${finalSection}`);
       }, 3000); // Matches the 3s transition duration
     });
   </script>
