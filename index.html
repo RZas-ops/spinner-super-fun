@@ -39,7 +39,7 @@
         #ff4500 300deg 330deg,
         #a52a2a 330deg 360deg
       );
-      transition: transform 3s cubic-bezier(0.22, 0.68, 0.18, 1.1);
+      transition: transform 3s linear; /* Using linear transition for consistency */
     }
     .pointer {
       position: absolute;
@@ -103,7 +103,7 @@
       // Total spin angle (rotation will always start from 0 for every new click)
       const spinAngle = baseSpin + targetAngle;
 
-      // Apply rotation
+      // Apply rotation in a smooth, constant direction (always clockwise)
       wheel.style.transform = `rotate(${spinAngle}deg)`;
 
       // After animation ends, reset for consistent behavior
