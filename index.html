@@ -82,6 +82,7 @@
     const wheel = document.querySelector('.wheel');
     const button = document.querySelector('.button');
     let isSpinning = false;
+    let currentRotation = 0; // Keep track of the total rotation
 
     button.addEventListener('click', () => {
       if (isSpinning) return;
@@ -90,22 +91,24 @@
       const numSections = 12; // Number of sections on the wheel
       const degreesPerSection = 360 / numSections; // 30° per section
       const randomSection = Math.floor(Math.random() * numSections); // Random section index (0 to 11)
-      
+
       // Calculate the random stopping angle for that section
       const randomAngle = randomSection * degreesPerSection;
 
       // Ensure at least 3 full spins (1080°) plus the random stopping point
-      const totalDegrees = 1080 + randomAngle;
+      const additionalRotation = 1080 + randomAngle;
+      currentRotation += additionalRotation; // Increment total rotation
 
       // Spin the wheel
-      wheel.style.transform = `rotate(${totalDegrees}deg)`;
+      wheel.style.transform = `rotate(${currentRotation}deg)`;
 
       // Wait for the spin to complete
       setTimeout(() => {
         isSpinning = false;
 
         // Log stopping information
-        console.log(`Wheel stopped on section: ${randomSection + 1}`);
+        const finalSection = randomSection + 1; // Sections numbered 1 to 12
+        console.log(`Wheel stopped on section: ${finalSection}`);
       }, 3000); // Matches the 3s transition duration
     });
   </script>
