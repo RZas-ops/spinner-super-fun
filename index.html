@@ -43,13 +43,13 @@
     }
     .pointer {
       position: absolute;
-      top: -15px;
+      top: -10px;
       left: 50%;
       transform: translateX(-50%) rotate(180deg);
-      width: 20px;
-      height: 40px;
+      width: 24px;
+      height: 48px;
       background-color: black;
-      clip-path: polygon(50% 100%, 0 0, 100% 0);
+      clip-path: polygon(50% 0, 0% 100%, 100% 100%);
     }
     .button {
       position: absolute;
@@ -82,39 +82,35 @@
     const wheel = document.querySelector('.wheel');
     const button = document.querySelector('.button');
     let isSpinning = false;
-    let totalSpins = 0; // Keeps track of the total spins (reset each spin)
+    let totalSpins = 0;
 
     button.addEventListener('click', () => {
       if (isSpinning) return;
       isSpinning = true;
 
-      const numSections = 12; // Number of sections on the wheel
-      const degreesPerSection = 360 / numSections; // 30° per section
+      const numSections = 12; // Number of sections
+      const degreesPerSection = 360 / numSections; // Each section spans 30 degrees
 
-      // Randomize the section index (0-11) and offset to center the pointer
-      const randomSection = Math.floor(Math.random() * numSections); // Random section
-      const centerOffset = degreesPerSection / 2; // Offset to stop at the center of a section
+      // Randomly select a section (0 to 11)
+      const randomSection = Math.floor(Math.random() * numSections);
 
-      // Calculate the stopping point with offset for centered stopping
-      const randomAngle = randomSection * degreesPerSection + centerOffset;
+      // Offset the angle by half a section to ensure the pointer lands in the middle
+      const centerOffset = degreesPerSection / 2;
+      const targetAngle = randomSection * degreesPerSection + centerOffset;
 
-      // Add a base spin of 3 full rotations (1080°)
-      const spinDegrees = 1080 + randomAngle;
+      // Base spin of 3 full rotations (1080 degrees)
+      const baseSpin = 1080;
 
-      // Update total spins
-      totalSpins += spinDegrees;
+      // Total spin angle
+      totalSpins += baseSpin + targetAngle;
 
-      // Apply spin
+      // Apply rotation
       wheel.style.transform = `rotate(${totalSpins}deg)`;
 
-      // Wait for the spin to complete
       setTimeout(() => {
         isSpinning = false;
-
-        // Log result
-        const finalSection = randomSection + 1; // Sections numbered 1 to 12
-        console.log(`Wheel stopped on section: ${finalSection}`);
-      }, 3000); // Matches the 3s transition duration
+        console.log(`Wheel stopped at section ${randomSection + 1}`);
+      }, 3000); // Duration matches CSS animation
     });
   </script>
 </body>
