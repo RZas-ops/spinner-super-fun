@@ -100,7 +100,7 @@
       // Base spin of 3 full rotations (1080 degrees)
       const baseSpin = 1080;
 
-      // Resetting the spin on each cycle ensures precise targeting
+      // Total spin angle (rotation will always start from 0 for every new click)
       const spinAngle = baseSpin + targetAngle;
 
       // Apply rotation
@@ -109,9 +109,6 @@
       // After animation ends, reset for consistent behavior
       setTimeout(() => {
         isSpinning = false;
-
-        // Keep cumulative rotation within a single turn for accuracy
-        wheel.style.transform = `rotate(${targetAngle}deg)`;
       }, 3000); // Matches the CSS animation duration
     });
   </script>
