@@ -47,6 +47,7 @@
       top: -10px;
       left: 140px;
       z-index: 1;
+      transform: rotate(0deg);
     }
 
     .button {
@@ -68,14 +69,14 @@
 
     .label {
       position: absolute;
-      width: 80px;
+      width: 100px;
       height: 20px;
       top: 50%;
       left: 50%;
-      transform-origin: 0 150px; /* Adjusted to position labels outward */
+      transform-origin: 0 125px; /* Adjusted label distance to align at the wheel's edge */
       text-align: center;
       font-size: 14px;
-      color: white;
+      color: black;
       font-weight: bold;
       pointer-events: none;
     }
@@ -86,19 +87,19 @@
     <div class="wheel" id="wheel"></div>
     <div class="pointer"></div>
     <button class="button" id="spinButton">Spin</button>
-    <!-- Labels dynamically placed around the wheel -->
-    <div class="label" style="transform: rotate(15deg) translate(0, -140px);">Label 1</div>
-    <div class="label" style="transform: rotate(45deg) translate(0, -140px);">Label 2</div>
-    <div class="label" style="transform: rotate(75deg) translate(0, -140px);">Label 3</div>
-    <div class="label" style="transform: rotate(105deg) translate(0, -140px);">Label 4</div>
-    <div class="label" style="transform: rotate(135deg) translate(0, -140px);">Label 5</div>
-    <div class="label" style="transform: rotate(165deg) translate(0, -140px);">Label 6</div>
-    <div class="label" style="transform: rotate(195deg) translate(0, -140px);">Label 7</div>
-    <div class="label" style="transform: rotate(225deg) translate(0, -140px);">Label 8</div>
-    <div class="label" style="transform: rotate(255deg) translate(0, -140px);">Label 9</div>
-    <div class="label" style="transform: rotate(285deg) translate(0, -140px);">Label 10</div>
-    <div class="label" style="transform: rotate(315deg) translate(0, -140px);">Label 11</div>
-    <div class="label" style="transform: rotate(345deg) translate(0, -140px);">Label 12</div>
+    <!-- Labels positioned around the wheel -->
+    <div class="label" style="transform: rotate(15deg) translate(0, -150px);">Label 1</div>
+    <div class="label" style="transform: rotate(45deg) translate(0, -150px);">Label 2</div>
+    <div class="label" style="transform: rotate(75deg) translate(0, -150px);">Label 3</div>
+    <div class="label" style="transform: rotate(105deg) translate(0, -150px);">Label 4</div>
+    <div class="label" style="transform: rotate(135deg) translate(0, -150px);">Label 5</div>
+    <div class="label" style="transform: rotate(165deg) translate(0, -150px);">Label 6</div>
+    <div class="label" style="transform: rotate(195deg) translate(0, -150px);">Label 7</div>
+    <div class="label" style="transform: rotate(225deg) translate(0, -150px);">Label 8</div>
+    <div class="label" style="transform: rotate(255deg) translate(0, -150px);">Label 9</div>
+    <div class="label" style="transform: rotate(285deg) translate(0, -150px);">Label 10</div>
+    <div class="label" style="transform: rotate(315deg) translate(0, -150px);">Label 11</div>
+    <div class="label" style="transform: rotate(345deg) translate(0, -150px);">Label 12</div>
   </div>
   <script>
     const spinButton = document.getElementById("spinButton");
