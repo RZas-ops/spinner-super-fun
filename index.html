@@ -1,32 +1,23 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spinning Wheel</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Spinner with Labels</title>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      background-color: #f0f0f0;
-    }
     .wheel-container {
       position: relative;
       width: 300px;
       height: 300px;
+      margin: 50px auto;
     }
+
     .wheel {
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      border: 5px solid #333;
-      position: absolute;
       background: conic-gradient(
-        #10ff19 0 30deg,
+        #10ff19 0deg 30deg,
         #991da8 30deg 60deg,
         #ffb885 60deg 90deg,
         #c80887 90deg 120deg,
@@ -39,94 +30,85 @@
         #ffff00 300deg 330deg,
         #000000 330deg 360deg
       );
-    }
-    .pointer {
       position: absolute;
       top: 0;
-      left: 50%;
-      transform: translateX(-50%) rotate(0deg);
-      width: 20px;
-      height: 40px;
-      background-color: white !important;
-      clip-path: polygon(50% 100%, 0 0, 100% 0);
-      z-index: 10;
+      left: 0;
+      transform: rotate(0deg);
+      transition: transform 4s cubic-bezier(0.25, 0.1, 0.25, 1);
     }
+
+    .pointer {
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 0 20px 40px 20px;
+      border-color: transparent transparent white transparent;
+      position: absolute;
+      top: -10px;
+      left: 140px;
+      z-index: 1;
+    }
+
     .button {
       position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
+      top: calc(50% - 15px);
+      left: calc(50% - 50px);
+      width: 100px;
+      height: 30px;
+      border: none;
+      border-radius: 5px;
       background-color: #007bff;
       color: white;
-      border: none;
-      border-radius: 50%;
-      width: 60px;
-      height: 60px;
-      font-size: 1.2em;
+      font-size: 14px;
+      font-weight: bold;
       cursor: pointer;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      z-index: 2;
     }
-    .button:active {
-      background-color: #0056b3;
+
+    .label {
+      position: absolute;
+      width: 100px;
+      height: 20px;
+      top: 50%;
+      left: 50%;
+      transform-origin: 50% 0%;
+      text-align: center;
+      font-size: 14px;
+      color: white;
+      font-weight: bold;
+      pointer-events: none;
     }
   </style>
 </head>
 <body>
   <div class="wheel-container">
-    <div class="wheel"></div>
+    <div class="wheel" id="wheel"></div>
     <div class="pointer"></div>
-    <button class="button">Spin</button>
+    <button class="button" id="spinButton">Spin</button>
+    <!-- Labels for each section -->
+    <div class="label" style="transform: translate(-50%, -50%) rotate(15deg);">Label 1</div>
+    <div class="label" style="transform: translate(-50%, -50%) rotate(45deg);">Label 2</div>
+    <div class="label" style="transform: translate(-50%, -50%) rotate(75deg);">Label 3</div>
+    <div class="label" style="transform: translate(-50%, -50%) rotate(105deg);">Label 4</div>
+    <div class="label" style="transform: translate(-50%, -50%) rotate(135deg);">Label 5</div>
+    <div class="label" style="transform: translate(-50%, -50%) rotate(165deg);">Label 6</div>
+    <div class="label" style="transform: translate(-50%, -50%) rotate(195deg);">Label 7</div>
+    <div class="label" style="transform: translate(-50%, -50%) rotate(225deg);">Label 8</div>
+    <div class="label" style="transform: translate(-50%, -50%) rotate(255deg);">Label 9</div>
+    <div class="label" style="transform: translate(-50%, -50%) rotate(285deg);">Label 10</div>
+    <div class="label" style="transform: translate(-50%, -50%) rotate(315deg);">Label 11</div>
+    <div class="label" style="transform: translate(-50%, -50%) rotate(345deg);">Label 12</div>
   </div>
-
   <script>
-    const wheel = document.querySelector('.wheel');
-    const button = document.querySelector('.button');
-    let isSpinning = false;
+    const spinButton = document.getElementById("spinButton");
+    const wheel = document.getElementById("wheel");
+    let currentRotation = 0;
 
-    // Adjust spin parameters
-    const numSections = 12; // Number of sections
-    const degreesPerSection = 360 / numSections;
-
-    // Function to start spin
-    button.addEventListener('click', () => {
-      if (isSpinning) return;
-      isSpinning = true;
-
-      // Get a random target section (0 to numSections-1)
-      const randomSection = Math.floor(Math.random() * numSections);
-      const targetAngle = randomSection * degreesPerSection + (degreesPerSection / 2);
-
-      // Add a randomization factor to change spin behavior
-      const randomRotationOffset = Math.floor(Math.random() * 1000); // Random offset to prevent repetitive results
-      const baseSpin = 1080; // Full rotations (3 times)
-      const spinAngle = baseSpin + targetAngle + randomRotationOffset;
-
-      // Variable for smooth rotation
-      let startAngle = 0;  // Starting position
-
-      const totalSpinTime = 3000;  // Spin duration (ms)
-      let startTime = null;
-
-      // Animate spin with smooth motion
-      const animate = (currentTime) => {
-        if (!startTime) startTime = currentTime;
-        const timeElapsed = currentTime - startTime;
-        const progress = timeElapsed / totalSpinTime;
-        const rotation = startAngle + progress * (spinAngle - startAngle);
-
-        // Apply rotation to the wheel
-        wheel.style.transform = `rotate(${rotation}deg)`;
-
-        // Continue animation until completed
-        if (timeElapsed < totalSpinTime) {
-          requestAnimationFrame(animate);
-        } else {
-          isSpinning = false;
-        }
-      };
-
-      // Start the animation
-      requestAnimationFrame(animate);
+    spinButton.addEventListener("click", () => {
+      const randomRotation = Math.floor(360 + Math.random() * 360 * 5); // At least one full spin
+      currentRotation += randomRotation;
+      wheel.style.transform = `rotate(${currentRotation}deg)`;
     });
   </script>
 </body>
