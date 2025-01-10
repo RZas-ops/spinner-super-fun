@@ -9,123 +9,113 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      height: 100vh;
+      min-height: 100vh;
       margin: 0;
       background-color: #f0f0f0;
     }
-
-    .wheel-container {
+    .spinner-container {
       position: relative;
-      width: 300px;
-      height: 300px;
+      width: 400px;
+      height: 400px;
     }
-
-    .wheel {
+    .spinner {
       width: 100%;
       height: 100%;
       border-radius: 50%;
-      background: conic-gradient(
-        #10ff19 0deg 30deg,
-        #991da8 30deg 60deg,
-        #ffb885 60deg 90deg,
-        #c80887 90deg 120deg,
-        #ffff00 120deg 150deg,
-        #000000 150deg 180deg,
-        #10ff19 180deg 210deg,
-        #991da8 210deg 240deg,
-        #ffb885 240deg 270deg,
-        #c80887 270deg 300deg,
-        #ffff00 300deg 330deg,
-        #000000 330deg 360deg
-      );
       position: absolute;
-      transform: rotate(0deg);
-      transition: transform 4s cubic-bezier(0.25, 0.1, 0.25, 1);
     }
-
     .pointer {
+      position: absolute;
       width: 0;
       height: 0;
       border-style: solid;
-      border-width: 40px 20px 0 20px;
-      border-color: white transparent transparent transparent;
-      position: absolute;
-      top: -20px;
-      left: calc(50% - 20px);
-      transform: rotate(0deg); /* Rotated to point downwards */
-      z-index: 2;
+      border-width: 0 20px 40px 20px;
+      border-color: transparent transparent #ffffff transparent;
+      top: -40px;
+      left: 180px;
     }
-
-    .button {
-      position: absolute;
-      top: calc(50% - 15px);
-      left: calc(50% - 50px);
-      width: 100px;
-      height: 30px;
-      border: none;
-      border-radius: 5px;
-      background-color: #007bff;
-      color: white;
-      font-size: 14px;
-      font-weight: bold;
-      cursor: pointer;
-      z-index: 3;
-    }
-
     .label {
       position: absolute;
-      width: 60px; /* Adjusted for consistency */
-      height: 20px;
+      transform-origin: center -180px;
       text-align: center;
-      font-size: 14px;
       font-weight: bold;
-      transform-origin: center center;
+      font-size: 16px;
+      pointer-events: none;
     }
-
-    /* Labels positioned evenly around the wheel */
-    .label:nth-child(1) { transform: translate(-50%, -50%) rotate(15deg) translate(0, -130px) rotate(-15deg); }
-    .label:nth-child(2) { transform: translate(-50%, -50%) rotate(45deg) translate(0, -130px) rotate(-45deg); }
-    .label:nth-child(3) { transform: translate(-50%, -50%) rotate(75deg) translate(0, -130px) rotate(-75deg); }
-    .label:nth-child(4) { transform: translate(-50%, -50%) rotate(105deg) translate(0, -130px) rotate(-105deg); }
-    .label:nth-child(5) { transform: translate(-50%, -50%) rotate(135deg) translate(0, -130px) rotate(-135deg); }
-    .label:nth-child(6) { transform: translate(-50%, -50%) rotate(165deg) translate(0, -130px) rotate(-165deg); }
-    .label:nth-child(7) { transform: translate(-50%, -50%) rotate(195deg) translate(0, -130px) rotate(-195deg); }
-    .label:nth-child(8) { transform: translate(-50%, -50%) rotate(225deg) translate(0, -130px) rotate(-225deg); }
-    .label:nth-child(9) { transform: translate(-50%, -50%) rotate(255deg) translate(0, -130px) rotate(-255deg); }
-    .label:nth-child(10) { transform: translate(-50%, -50%) rotate(285deg) translate(0, -130px) rotate(-285deg); }
-    .label:nth-child(11) { transform: translate(-50%, -50%) rotate(315deg) translate(0, -130px) rotate(-315deg); }
-    .label:nth-child(12) { transform: translate(-50%, -50%) rotate(345deg) translate(0, -130px) rotate(-345deg); }
+    button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 10px 20px;
+      font-size: 16px;
+    }
   </style>
 </head>
 <body>
-  <div class="wheel-container">
-    <div class="wheel" id="wheel"></div>
+  <div class="spinner-container">
+    <div class="spinner"></div>
     <div class="pointer"></div>
-    <button class="button" id="spinButton">Spin</button>
-    <!-- Labels -->
-    <div class="label" style="top: 50%; left: 50%;">1</div>
-    <div class="label" style="top: 50%; left: 50%;">2</div>
-    <div class="label" style="top: 50%; left: 50%;">3</div>
-    <div class="label" style="top: 50%; left: 50%;">4</div>
-    <div class="label" style="top: 50%; left: 50%;">5</div>
-    <div class="label" style="top: 50%; left: 50%;">6</div>
-    <div class="label" style="top: 50%; left: 50%;">7</div>
-    <div class="label" style="top: 50%; left: 50%;">8</div>
-    <div class="label" style="top: 50%; left: 50%;">9</div>
-    <div class="label" style="top: 50%; left: 50%;">10</div>
-    <div class="label" style="top: 50%; left: 50%;">11</div>
-    <div class="label" style="top: 50%; left: 50%;">12</div>
+    <button onclick="spin()">Spin</button>
   </div>
-  <script>
-    const spinButton = document.getElementById("spinButton");
-    const wheel = document.getElementById("wheel");
-    let currentRotation = 0;
 
-    spinButton.addEventListener("click", () => {
-      const randomRotation = Math.floor(360 + Math.random() * 360 * 5); // At least 5 spins
-      currentRotation += randomRotation;
-      wheel.style.transform = `rotate(${currentRotation}deg)`;
-    });
+  <script>
+    const spinner = document.querySelector('.spinner');
+    const spinnerContainer = document.querySelector('.spinner-container');
+    const numSegments = 12;
+    const colors = ['#10ff19', '#991da8', '#ffb885', '#c80887', '#ffff00', '#000000',
+                    '#10ff19', '#991da8', '#ffb885', '#c80887', '#ffff00', '#000000'];
+    const labels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+
+    // Create pie segments and labels
+    const createWheel = () => {
+      const ctx = spinner.getContext('2d');
+      const anglePerSegment = (2 * Math.PI) / numSegments;
+
+      spinner.width = 400;
+      spinner.height = 400;
+
+      for (let i = 0; i < numSegments; i++) {
+        const startAngle = i * anglePerSegment;
+        const endAngle = startAngle + anglePerSegment;
+
+        // Draw segments
+        ctx.beginPath();
+        ctx.moveTo(200, 200);
+        ctx.arc(200, 200, 200, startAngle, endAngle);
+        ctx.fillStyle = colors[i % colors.length];
+        ctx.fill();
+        ctx.closePath();
+
+        // Add labels
+        const label = document.createElement('div');
+        const labelAngle = startAngle + anglePerSegment / 2;
+        const x = 200 + Math.cos(labelAngle) * 150;
+        const y = 200 + Math.sin(labelAngle) * 150;
+
+        label.className = 'label';
+        label.style.transform = `translate(-50%, -50%) rotate(${labelAngle}rad)`;
+        label.style.left = `${x}px`;
+        label.style.top = `${y}px`;
+        label.textContent = labels[i];
+        spinnerContainer.appendChild(label);
+      }
+    };
+
+    let currentDegree = 0;
+
+    const spin = () => {
+      const spins = Math.random() * 3 + 3; // Random 3–6 full spins
+      const finalAngle = Math.random() * 360;
+      const totalAngle = spins * 360 + finalAngle;
+      const duration = 3000; // 3 seconds
+
+      spinner.style.transition = `transform ${duration}ms cubic-bezier(0.17, 0.67, 0.83, 0.67)`;
+      spinner.style.transform = `rotate(${totalAngle + currentDegree}deg)`;
+      currentDegree += totalAngle;
+    };
+
+    createWheel();
   </script>
 </body>
 </html>
