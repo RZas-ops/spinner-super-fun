@@ -54,7 +54,7 @@
 </head>
 <body>
   <div class="spinner-container">
-    <div class="spinner"></div>
+    <canvas class="spinner"></canvas>
     <div class="pointer"></div>
     <button onclick="spin()">Spin</button>
   </div>
@@ -62,7 +62,7 @@
   <script>
     const spinner = document.querySelector('.spinner');
     const spinnerContainer = document.querySelector('.spinner-container');
-    const numSegments = 12;
+    const numSegments = 12; // Ensure this matches the label count
     const colors = ['#10ff19', '#991da8', '#ffb885', '#c80887', '#ffff00', '#000000',
                     '#10ff19', '#991da8', '#ffb885', '#c80887', '#ffff00', '#000000'];
     const labels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
@@ -90,11 +90,11 @@
         // Add labels
         const label = document.createElement('div');
         const labelAngle = startAngle + anglePerSegment / 2;
-        const x = 200 + Math.cos(labelAngle) * 150;
-        const y = 200 + Math.sin(labelAngle) * 150;
+        const x = 200 + Math.cos(labelAngle) * 170;
+        const y = 200 + Math.sin(labelAngle) * 170;
 
         label.className = 'label';
-        label.style.transform = `translate(-50%, -50%) rotate(${labelAngle}rad)`;
+        label.style.transform = `translate(-50%, -50%)`;
         label.style.left = `${x}px`;
         label.style.top = `${y}px`;
         label.textContent = labels[i];
@@ -119,6 +119,7 @@
   </script>
 </body>
 </html>
+
 
 
 
