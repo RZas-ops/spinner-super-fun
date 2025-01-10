@@ -18,15 +18,19 @@
       width: 400px;
       height: 400px;
     }
+    .spinner {
+      display: block;
+    }
     .pointer {
       position: absolute;
       width: 0;
       height: 0;
       border-style: solid;
-      border-width: 0 20px 40px 20px;
-      border-color: transparent transparent #ffffff transparent;
-      top: -40px;
+      border-width: 40px 20px 0 20px;
+      border-color: #ffffff transparent transparent transparent;
+      bottom: -40px;
       left: 180px;
+      transform: rotate(0deg);
     }
     button {
       position: absolute;
@@ -35,6 +39,7 @@
       transform: translate(-50%, -50%);
       padding: 10px 20px;
       font-size: 16px;
+      z-index: 2;
     }
   </style>
 </head>
@@ -51,6 +56,7 @@
     const colors = ['#10ff19', '#991da8', '#ffb885', '#c80887', '#ffff00', '#000000',
                     '#10ff19', '#991da8', '#ffb885', '#c80887', '#ffff00', '#000000'];
     const labels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+    const pointerAngle = 90; // Adjust for the pointer position
 
     let currentDegree = 0;
     let spinning = false;
@@ -95,17 +101,19 @@
       if (spinning) return;
       spinning = true;
 
-      const spins = Math.random() * 3 + 3; // Random 3–6 full spins
+      const spins = Math.floor(Math.random() * 3) + 3; // Random 3–5 full spins
       const finalAngle = Math.random() * 360;
       const totalAngle = spins * 360 + finalAngle;
       const duration = 3000; // 3 seconds
 
       spinner.style.transition = `transform ${duration}ms cubic-bezier(0.17, 0.67, 0.83, 0.67)`;
-      spinner.style.transform = `rotate(${totalAngle + currentDegree}deg)`;
+      const targetDegree = (currentDegree + totalAngle) % 360;
+      const offsetAngle = (360 - pointerAngle + targetDegree) % 360;
+      spinner.style.transform = `rotate(${targetDegree - offsetAngle}deg)`;
 
       setTimeout(() => {
         spinning = false;
-        currentDegree = (currentDegree + totalAngle) % 360;
+        currentDegree = targetDegree - offsetAngle;
         createWheel(); // Redraw the wheel after the spin
       }, duration);
     };
@@ -114,6 +122,7 @@
   </script>
 </body>
 </html>
+
 
 
 
