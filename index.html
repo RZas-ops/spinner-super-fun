@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Spinner with Proper Labels and Pointer</title>
+  <title>Spinner with Labels</title>
   <style>
     body {
       display: flex;
@@ -50,10 +50,10 @@
       border-width: 40px 20px 0 20px;
       border-color: white transparent transparent transparent;
       position: absolute;
-      top: -10px; /* Move pointer above the circle */
-      left: 140px; /* Center pointer horizontally */
-      transform: rotate(180deg); /* Rotate to point downwards */
-      z-index: 1;
+      top: -20px;
+      left: calc(50% - 20px);
+      transform: rotate(0deg); /* Rotated to point downwards */
+      z-index: 2;
     }
 
     .button {
@@ -69,31 +69,32 @@
       font-size: 14px;
       font-weight: bold;
       cursor: pointer;
-      z-index: 2;
+      z-index: 3;
     }
 
     .label {
       position: absolute;
+      width: 60px; /* Adjusted for consistency */
+      height: 20px;
       text-align: center;
       font-size: 14px;
-      color: black;
       font-weight: bold;
-      pointer-events: none;
+      transform-origin: center center;
     }
 
-    /* Position labels around the wheel */
-    .label:nth-child(4) { transform: rotate(15deg) translate(0, -140px); }
-    .label:nth-child(5) { transform: rotate(45deg) translate(0, -140px); }
-    .label:nth-child(6) { transform: rotate(75deg) translate(0, -140px); }
-    .label:nth-child(7) { transform: rotate(105deg) translate(0, -140px); }
-    .label:nth-child(8) { transform: rotate(135deg) translate(0, -140px); }
-    .label:nth-child(9) { transform: rotate(165deg) translate(0, -140px); }
-    .label:nth-child(10) { transform: rotate(195deg) translate(0, -140px); }
-    .label:nth-child(11) { transform: rotate(225deg) translate(0, -140px); }
-    .label:nth-child(12) { transform: rotate(255deg) translate(0, -140px); }
-    .label:nth-child(13) { transform: rotate(285deg) translate(0, -140px); }
-    .label:nth-child(14) { transform: rotate(315deg) translate(0, -140px); }
-    .label:nth-child(15) { transform: rotate(345deg) translate(0, -140px); }
+    /* Labels positioned evenly around the wheel */
+    .label:nth-child(1) { transform: translate(-50%, -50%) rotate(15deg) translate(0, -130px) rotate(-15deg); }
+    .label:nth-child(2) { transform: translate(-50%, -50%) rotate(45deg) translate(0, -130px) rotate(-45deg); }
+    .label:nth-child(3) { transform: translate(-50%, -50%) rotate(75deg) translate(0, -130px) rotate(-75deg); }
+    .label:nth-child(4) { transform: translate(-50%, -50%) rotate(105deg) translate(0, -130px) rotate(-105deg); }
+    .label:nth-child(5) { transform: translate(-50%, -50%) rotate(135deg) translate(0, -130px) rotate(-135deg); }
+    .label:nth-child(6) { transform: translate(-50%, -50%) rotate(165deg) translate(0, -130px) rotate(-165deg); }
+    .label:nth-child(7) { transform: translate(-50%, -50%) rotate(195deg) translate(0, -130px) rotate(-195deg); }
+    .label:nth-child(8) { transform: translate(-50%, -50%) rotate(225deg) translate(0, -130px) rotate(-225deg); }
+    .label:nth-child(9) { transform: translate(-50%, -50%) rotate(255deg) translate(0, -130px) rotate(-255deg); }
+    .label:nth-child(10) { transform: translate(-50%, -50%) rotate(285deg) translate(0, -130px) rotate(-285deg); }
+    .label:nth-child(11) { transform: translate(-50%, -50%) rotate(315deg) translate(0, -130px) rotate(-315deg); }
+    .label:nth-child(12) { transform: translate(-50%, -50%) rotate(345deg) translate(0, -130px) rotate(-345deg); }
   </style>
 </head>
 <body>
@@ -102,18 +103,18 @@
     <div class="pointer"></div>
     <button class="button" id="spinButton">Spin</button>
     <!-- Labels -->
-    <div class="label" style="transform: rotate(15deg);">Label 1</div>
-    <div class="label" style="transform: rotate(45deg);">Label 2</div>
-    <div class="label" style="transform: rotate(75deg);">Label 3</div>
-    <div class="label" style="transform: rotate(105deg);">Label 4</div>
-    <div class="label" style="transform: rotate(135deg);">Label 5</div>
-    <div class="label" style="transform: rotate(165deg);">Label 6</div>
-    <div class="label" style="transform: rotate(195deg);">Label 7</div>
-    <div class="label" style="transform: rotate(225deg);">Label 8</div>
-    <div class="label" style="transform: rotate(255deg);">Label 9</div>
-    <div class="label" style="transform: rotate(285deg);">Label 10</div>
-    <div class="label" style="transform: rotate(315deg);">Label 11</div>
-    <div class="label" style="transform: rotate(345deg);">Label 12</div>
+    <div class="label" style="top: 50%; left: 50%;">1</div>
+    <div class="label" style="top: 50%; left: 50%;">2</div>
+    <div class="label" style="top: 50%; left: 50%;">3</div>
+    <div class="label" style="top: 50%; left: 50%;">4</div>
+    <div class="label" style="top: 50%; left: 50%;">5</div>
+    <div class="label" style="top: 50%; left: 50%;">6</div>
+    <div class="label" style="top: 50%; left: 50%;">7</div>
+    <div class="label" style="top: 50%; left: 50%;">8</div>
+    <div class="label" style="top: 50%; left: 50%;">9</div>
+    <div class="label" style="top: 50%; left: 50%;">10</div>
+    <div class="label" style="top: 50%; left: 50%;">11</div>
+    <div class="label" style="top: 50%; left: 50%;">12</div>
   </div>
   <script>
     const spinButton = document.getElementById("spinButton");
@@ -121,13 +122,14 @@
     let currentRotation = 0;
 
     spinButton.addEventListener("click", () => {
-      const randomRotation = Math.floor(360 + Math.random() * 360 * 5); // At least one full spin
+      const randomRotation = Math.floor(360 + Math.random() * 360 * 5); // At least 5 spins
       currentRotation += randomRotation;
       wheel.style.transform = `rotate(${currentRotation}deg)`;
     });
   </script>
 </body>
 </html>
+
 
 
 
