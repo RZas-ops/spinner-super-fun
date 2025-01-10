@@ -22,15 +22,17 @@
       display: block;
       transform-origin: center;
     }
-    .pointer {
-      position: absolute;
-      width: 0;
-      height: 0;
-      border-style: solid;
-      border-width: 40px 20px 0 20px;
-      border-color: white transparent transparent transparent;
-      bottom: -40px;
-      left: 180px;
+   .pointer {
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 20px 40px 20px; /* Flip the direction */
+  border-color: transparent transparent white transparent;
+  top: -20px; /* Adjust to move it closer to the bottom */
+  left: 180px;
+  transform: rotate(180deg); /* Ensures it stays in the correct orientation */
+}
     }
     button {
       position: absolute;
@@ -55,7 +57,8 @@
     const numSegments = 12;
     const colors = ['#10ff19', '#991da8', '#ffb885', '#c80887', '#ffff00', '#000000',
                     '#10ff19', '#991da8', '#ffb885', '#c80887', '#ffff00', '#000000'];
-    const labels = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+    const labels = ['-', '(', 'exp 2', '-1', ')', √', '+', 'all/2', 'term/2', '(', '3', ')'];
+
     let spinning = false;
 
     const createWheel = () => {
